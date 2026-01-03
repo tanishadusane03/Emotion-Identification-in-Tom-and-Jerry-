@@ -1,4 +1,20 @@
+# Virtual environment
 venv/
+
+# VS Code
+.vscode/
+
+# Temp runtime folders
+audio_clips/
+uploads/
+
+# Generated files
+emotion_predictions.csv
+*.mp4
+*.avi
+*.mov
+*.wav
+
+# Python cache
 __pycache__/
 *.pyc
-.env

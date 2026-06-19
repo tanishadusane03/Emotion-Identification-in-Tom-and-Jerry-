@@ -124,18 +124,19 @@ To prevent data leakage under limited data conditions:
 ## Repository Structure
 
 ```
-├── data/
-│   ├── features/          # Extracted feature vectors (NPY/CSV)
-│   └── annotations/       # Emotion labels and metadata
-├── src/
-│   ├── preprocess.py      # Audio loading, resampling, normalization
-│   ├── features.py        # YAMNet embedding extraction + handcrafted features
-│   ├── augment.py         # Controlled Gaussian noise augmentation
-│   ├── train.py           # Stacking ensemble training with CV
-│   └── evaluate.py        # Holdout evaluation, confusion matrix, ROC curves
-├── notebooks/
-│   └── analysis.ipynb     # Exploratory analysis and results visualization
-├── requirements.txt
+## Repository Structure
+
+├── models/
+│   ├── meta_model.pkl       # Trained stacking ensemble meta-learner
+│   ├── rf.pkl               # Random Forest base model
+│   ├── svm.pkl              # SVM base model  
+│   ├── xgb_base.pkl         # XGBoost base model
+│   ├── scaler.pkl           # RobustScaler fitted on training data
+│   └── label_encoder.pkl    # Emotion label encoder
+├── references/              # Reference papers and dataset annotations
+├── app.py                   # Streamlit frontend — real-time emotion prediction UI
+├── backend.py               # Feature extraction and inference pipeline
+├── .gitignore
 └── README.md
 ```
 
@@ -145,30 +146,19 @@ To prevent data leakage under limited data conditions:
 
 ### Requirements
 
-```bash
+``## Setup & Usage
+
+### Requirements
 pip install -r requirements.txt
-```
 
-Key dependencies: `tensorflow`, `librosa`, `scikit-learn`, `xgboost`, `imbalanced-learn`, `numpy`, `matplotlib`
+Key dependencies: tensorflow, librosa, scikit-learn, xgboost, 
+imbalanced-learn, streamlit, numpy, matplotlib
 
-### Extract Features
+### Run the App
+streamlit run app.py
 
-```bash
-python src/preprocess.py --input_dir data/raw_audio/ --output_dir data/processed/
-python src/features.py --input_dir data/processed/ --output_dir data/features/
-```
-
-### Train the Ensemble
-
-```bash
-python src/train.py --features data/features/ --labels data/annotations/labels.csv
-```
-
-### Evaluate on Holdout Set
-
-```bash
-python src/evaluate.py --model_path models/stacking_ensemble.pkl --holdout data/features/holdout/
-```
+Upload a 5-second audio clip extracted from a cartoon — 
+the app returns the predicted emotion with class probabilities.
 
 ---
 
